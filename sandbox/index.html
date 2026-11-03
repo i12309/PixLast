@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#081321">
+  <meta name="description" content="NEON 04:19 — песочница для размещения объектов и экспериментов с PixelFX на Phaser.">
+  <title>NEON LAB / Конструктор сцены — PixLast</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="header">
+      <div class="header-brand"><span class="brand-mark">N<span>·</span></span><div><span class="overline">PIX<span class="slash">/</span>LAST / LABORATORY</span><h1>NEON <em>LAB</em><small> / 01</small></h1></div></div>
+      <div class="header-right"><span class="live-indicator" id="fxState" role="status">PixelFX: подключение…</span><a class="nav-link" href="../index.html">← Вернуться в игру</a></div>
+    </header>
+    <main class="workspace">
+      <aside class="library panel" aria-label="Библиотека элементов">
+        <div class="panel-top"><span class="eyebrow">01 / БИБЛИОТЕКА</span><h2>Элементы сцены</h2><p>Выбери элемент и нажми на улице, чтобы установить.</p></div>
+        <div class="tabbar" role="tablist" aria-label="Тип элементов">
+          <button type="button" role="tab" id="objectsTab" aria-controls="objectsLibrary" aria-selected="true" class="tab active">Предметы <small>12</small></button>
+          <button type="button" role="tab" id="effectsTab" aria-controls="effectsLibrary" aria-selected="false" class="tab">Эффекты <small>244</small></button>
+        </div>
+        <div class="library-body" id="objectsLibrary" role="tabpanel" aria-labelledby="objectsTab"><div id="objectList" class="item-grid"></div></div>
+        <div class="library-body" id="effectsLibrary" role="tabpanel" aria-labelledby="effectsTab" hidden>
+          <label class="fieldlabel" for="fxQuery">Поиск по эффектам</label>
+          <input type="search" id="fxQuery" placeholder="Например, emp, fire, portal…" autocomplete="off" spellcheck="false">
+          <label class="fieldlabel" for="fxCategory">Категория</label>
+          <select id="fxCategory"><option value="all">Все категории · 244</option></select>
+          <div id="fxList" class="fx-list"></div>
+          <span class="library-count" id="fxCount"></span>
+        </div>
+        <div class="library-foot"><div class="dot"></div><span>Обычный клик — выбор инструмента. На сцене — установка. Можно перетаскивать из библиотеки.</span></div>
+      </aside>
+      <section class="viewport-panel" aria-label="Сцена и управление">
+        <div class="toolbar">
+          <div class="toolbar-group" aria-label="Инструменты">
+            <button class="tool active" data-tool="select" type="button" title="Выделение и перемещение (V)"><span>↖</span> Выделить</button>
+            <button class="tool" data-tool="pan" type="button" title="Перемещать камеру (H)"><span>✥</span> Камера</button>
+          </div>
+          <div class="toolbar-group">
+            <label class="toggle"><input type="checkbox" id="gridToggle"><span>Сетка</span></label>
+            <label class="toggle"><input type="checkbox" id="rainToggle" checked><span>Дождь</span></label>
+          </div>
+        </div>
+        <div class="canvas-shell" id="canvasShell">
+          <div id="sandboxGame" class="canvas-stage" aria-label="Редактируемая улица NEON 04:19"></div>
+          <div class="visual-scanlines" aria-hidden="true"></div>
+          <div class="stage-overlay">
+            <div><span class="sector-label">[ LIVE EDITOR ] / SECTOR 07</span><span class="placement-tip" id="placementTip">ИНСТРУМЕНТ: ВЫДЕЛЕНИЕ</span></div>
+            <div class="frame-coordinates" id="coords">X 0000 · Y 000</div>
+          </div>
+          <div id="loading" class="loading"><span class="loader-line"></span>ЗАГРУЗКА ДВИЖКА PHASER 3…</div>
+          <div id="fatal" class="loading fatal" hidden><strong>Phaser не загрузился.</strong><p>Нужен доступ к CDN или локальная копия в vendor/phaser.min.js.</p><button type="button" id="retryBtn">Повторить</button></div>
+        </div>
+        <div class="timeline panel">
+          <div class="timeline-head"><span>КООРДИНАТА КАМЕРЫ</span><span id="cameraValue">X: 0000 / 2800</span></div>
+          <div class="camera-row"><button type="button" id="cameraLeft" aria-label="Сместить камеру влево">◀</button><input type="range" id="cameraRange" min="0" max="2160" step="1" value="95" aria-label="Положение камеры"><button type="button" id="cameraRight" aria-label="Сместить камеру вправо">▶</button></div>
+          <div class="timeline-tools"><div class="timeline-actions"><button class="secondary" id="playAll" type="button">▶ Запустить все</button><button class="secondary" id="pauseAll" type="button">Ⅱ Пауза</button><button class="secondary" id="resetFx" type="button">↻ Повторить эффекты</button></div><div class="timeline-info">Колесо мыши — прокрутка сцены · V — выбор · H — камера · Del — удалить</div></div>
+        </div>
+        <div class="status-row"><span id="status" role="status" aria-live="polite">Песочница готова к редактированию</span><span id="sceneCount">0 объектов · 0 эффектов</span></div>
+      </section>
+      <aside class="inspector panel" aria-label="Панель параметров">
+        <div class="panel-top"><span class="eyebrow">02 / РЕДАКТИРОВАНИЕ</span><h2>Инспектор</h2><p>Выдели предмет или эффект на улице, чтобы изменить свойства.</p></div>
+        <div class="inspector-body" id="inspectorBody">
+          <div id="noSelection" class="empty-selection"><span class="empty-icon">⌖</span><strong>Объект не выбран</strong><p>Перетащи предмет из библиотеки или коснись элемента на сцене.</p></div>
+          <div id="selectedInspector" hidden>
+            <div class="selection-title"><span id="selectedType" class="mini-tag">ОБЪЕКТ</span><strong id="selectedName">—</strong><code id="selectedId"></code></div>
+            <div class="control-grid"><label>X <input id="propX" type="number" min="0" max="2800" step="1"></label><label>Y <input id="propY" type="number" min="0" max="360" step="1"></label></div>
+            <div class="control-grid"><label>Масштаб <input id="propScale" type="range" min="0.25" max="3" step="0.05"><output id="scaleValue">1.00×</output></label><label>Поворот <input id="propAngle" type="number" min="-180" max="180" step="5"></label></div>
+            <div class="control-grid"><label>Слой <input id="propDepth" type="number" min="0" max="95" step="1"></label><label>Прозрачность <input id="propAlpha" type="range" min="0.15" max="1" step="0.05"><output id="alphaValue">100%</output></label></div>
+            <label class="check"><input type="checkbox" id="propFlip">Отразить по горизонтали</label>
+            <div class="effect-inspector" id="effectInspector" hidden>
+              <div class="inspector-separator"><span>ПАРАМЕТРЫ ЭФФЕКТА</span></div>
+              <label>Палитра<select id="propPalette"></select></label>
+              <label>Скорость<input id="propSpeed" type="range" min="0.25" max="3" step="0.25"><output id="speedValue">1.00×</output></label>
+              <label class="check"><input type="checkbox" id="propRepeat">Повторять эффект по кругу</label>
+              <span class="attach-info" id="attachInfo"></span>
+              <div class="inspector-buttons"><button class="primary" id="playSelected" type="button">▶ Воспроизвести</button><button class="secondary" id="stopSelected" type="button">Ⅱ Пауза</button><button class="secondary" id="detachEffect" type="button">Отвязать</button></div>
+              <p id="effectMeta" class="info-small"></p>
+            </div>
+            <div class="object-inspector" id="objectInspector" hidden>
+              <div class="inspector-separator"><span>ЭФФЕКТ НА ПРЕДМЕТЕ</span></div>
+              <p class="info-small">Выдели предмет, выбери эффект слева и нажми «Применить». Анимация будет следовать за предметом.</p>
+              <span id="chosenEffect" class="attach-info">Эффект: ЭМИ-импульс</span><button id="attachEffect" class="secondary wide" type="button">＋ Применить выбранный эффект</button>
+            </div>
+            <div class="inspector-buttons bottom-actions"><button class="secondary" id="duplicateSelected" type="button">Дублировать</button><button class="danger" id="deleteSelected" type="button">Удалить</button></div>
+          </div>
+        </div>
+        <div class="inspector-foot">
+          <div class="section-label">СЛОИ СЦЕНЫ</div><div id="sceneLayers" class="scene-layers" aria-label="Размещённые элементы"></div><div class="section-label">СЦЕНА</div>
+          <div class="file-actions"><button type="button" id="undoBtn" class="secondary">↶ Назад</button><button type="button" id="redoBtn" class="secondary">↷ Вперёд</button></div>
+          <div class="file-actions"><button type="button" id="exportBtn" class="secondary">↓ Сохранить JSON</button><button type="button" id="importBtn" class="secondary">↑ Открыть JSON</button><input type="file" id="importFile" accept=".json,application/json" hidden></div>
+          <button type="button" id="exampleBtn" class="text-button">Вернуть демонстрационную сцену</button><button type="button" id="clearBtn" class="text-button warning">Очистить все элементы</button>
+          <span class="save-note">Изменения сохраняются автоматически в браузере. Игра NEON 04:19 не изменяется.</span>
+        </div>
+      </aside>
+    </main>
+    <footer class="footer"><span>PIXELFX LAB · PHASER 3.90 · SEPARATE SANDBOX</span><span>Оригинальные элементы PixLast · <a href="https://github.com/patch-gg/pixelfx" target="_blank" rel="noopener noreferrer">PixelFX (MIT)</a> · <a href="../THIRD_PARTY_NOTICES.md">Уведомления о лицензиях</a></span></footer>
+  </div>
+  <script type="module" src="bootstrap.js"></script>
+</body>
+</html>
