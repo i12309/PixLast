@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070e1b">
+  <meta name="description" content="NEON 04:19 — самостоятельная интерактивная 2D-демка киберпанк-приключения на Phaser с PixelFX.">
+  <title>NEON 04:19 — playable concept</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="identity"><div class="brand-icon"><span></span><span></span><span></span></div><div><span class="tiny-label">PROTOTYPE / 001</span><strong>NEON<span class="punct">·</span>04:19</strong></div></div>
+      <div class="topbar-right"><span class="engine-label"><span class="online-dot"></span>PHASER 3 · PIXELFX</span><button id="soundBtn" class="header-btn" aria-label="Включить звук" title="Включить звук">♪ <span id="soundLabel">ЗВУК ВЫКЛ.</span></button><button id="fullBtn" class="header-btn icon-btn" aria-label="Полный экран" title="Полный экран">⛶</button></div>
+    </header>
+    <div class="game-frame" id="frame">
+      <div class="stage" id="game" aria-label="Игровая сцена киберпанк-игры"></div>
+      <div class="scanlines" aria-hidden="true"></div>
+      <div class="vignette" aria-hidden="true"></div>
+      <div class="hud-top" id="hudTop">
+        <div class="hud-mission"><span class="hud-eyebrow">// ОПЕРАЦИЯ «ТЕМНЫЙ КАНАЛ»</span><div class="hud-objective" id="objective">Найди информатора у лапшичной</div></div>
+        <div class="hud-progress"><span id="phaseLabel">01 / 04</span><div class="progress-track"><div id="progressFill" class="progress-fill"></div></div><span class="timecode">СЕКТОР 07 — 04:19 AM</span></div>
+      </div>
+      <div class="caption-card" id="dialogue" hidden aria-live="polite"><span class="caption-name" id="dialogueName">НЕИЗВЕСТНЫЙ</span><p id="dialogueText">...</p><div class="caption-hint">[ E / ENTER / КАСАНИЕ ] ПРОДОЛЖИТЬ</div></div>
+      <div class="proximity" id="prompt" hidden><span class="key">E</span><span id="promptText">ГОВОРИТЬ</span></div>
+      <div class="notification" id="notification" role="status" aria-live="polite"></div>
+      <div class="bottom-corner"><span class="bracket">[</span> <span id="distance">СКАНЕР АКТИВЕН</span> <span class="bracket">]</span></div>
+      <div class="mobile-controls" id="touchControls" aria-label="Сенсорное управление">
+        <div class="mobile-group"><button class="touch-btn move" data-control="left" aria-label="Влево">◀</button><button class="touch-btn move" data-control="right" aria-label="Вправо">▶</button></div>
+        <div class="mobile-group"><button class="touch-btn action" data-control="action" aria-label="Взаимодействовать">E</button><button class="touch-btn pulse" data-control="pulse" aria-label="Электромагнитный импульс">F</button><button class="touch-btn jump" data-control="jump" aria-label="Прыжок">↑</button></div>
+      </div>
+      <div class="intro-overlay" id="intro">
+        <div class="intro-gradient"></div>
+        <div class="intro-content"><div class="intro-chip"><span class="status-pulse"></span> ИГРАЕМАЯ ДЕМКА · ОДНА МИССИЯ</div><div class="intro-code">[ CITY / 07 — NIGHT SHIFT ]</div><h1>NEON<span> / </span><em>04:19</em></h1><div class="tagline">В городе, который всё помнит,<br>тебе поручили стереть одно воспоминание.</div><div class="intro-foot"><button id="startBtn" class="start-btn">НАЧАТЬ ИСТОРИЮ <span>→</span></button><div class="intro-instructions">A / D — идти &nbsp;·&nbsp; ПРОБЕЛ — прыгнуть<br>E — действие &nbsp;·&nbsp; F — ЭМИ импульс</div></div></div>
+        <div class="intro-bottom"><span>ORIGINAL PIXEL ART CONCEPT</span><span>01 / PROLOGUE</span></div>
+      </div>
+      <div class="end-overlay" id="ending" hidden><div class="end-inner"><span class="end-kicker">// ПЕРЕДАЧА ЗАВЕРШЕНА</span><h2>СИГНАЛ<br><em>ПОЛУЧЕН.</em></h2><p>Ты доставил память за пределы сектора. Но кто отправил её — и почему за ней охотились?</p><button id="restartBtn" class="start-btn">ПРОЙТИ ЕЩЁ РАЗ <span>↻</span></button><span class="end-foot">КОНЕЦ ДЕМО · ПРОДОЛЖЕНИЕ ВОЗМОЖНО</span></div></div>
+      <div class="loading" id="loading"><div class="loading-bar"></div><span>ЗАГРУЗКА СЕКТОРА 07...</span></div>
+    </div>
+    <div class="below">
+      <div class="below-left"><span class="small-signal">●</span><strong>ПРОЛОГ: ТЁМНЫЙ КАНАЛ</strong><span>Короткий игровой этюд в стиле кинематографичного пиксель-арта</span></div>
+      <div class="controls-legend"><span><kbd>A</kbd><kbd>D</kbd> движение</span><span><kbd>SPACE</kbd> прыжок</span><span><kbd>E</kbd> взаимодействие</span><span><kbd>F</kbd> импульс</span></div>
+    </div>
+    <footer><span>НЕЗАВИСИМЫЙ ТЕХНОЛОГИЧЕСКИЙ ПРОТОТИП</span><span>Вдохновлён жанром cinematic cyberpunk platformer · не использует материалы The Last Night</span></footer>
+  </div>
+  <div id="fatal" class="fatal" hidden><b>Не удалось загрузить Phaser.</b><p>Для первого запуска требуется подключение к интернету. Проверьте доступ к jsDelivr или откройте демку через локальный сервер после установки библиотеки.</p><button onclick="location.reload()">ПОВТОРИТЬ</button></div>
+  <script type="module" src="js/bootstrap.js"></script>
+</body>
+</html>
